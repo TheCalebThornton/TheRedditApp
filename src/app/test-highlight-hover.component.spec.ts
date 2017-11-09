@@ -3,7 +3,7 @@ import { HighlightHoverDirective } from './highlight-hover.directive';
 import { TestHighlightHoverComponent } from './test-highlight-hover.component';
 
 
-fdescribe('testMouseOverHoverComponent', () => {
+describe('testMouseOverHoverComponent', () => {
   let testComponent: TestHighlightHoverComponent;
   let fixture: ComponentFixture<any>;
   let myImage : Element

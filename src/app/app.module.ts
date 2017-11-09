@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule} from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { RedditPostListComponent } from './reddit-post-list/reddit-post-list.com
 import { ListItemComponent } from './list-item/list-item.component';
 import { HighlightHoverDirective } from './highlight-hover.directive';
 import { TestHighlightHoverComponent } from './test-highlight-hover.component';
+import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-form/update-personal-gallery-form.component';
 
 
 
@@ -19,10 +21,12 @@ import { TestHighlightHoverComponent } from './test-highlight-hover.component';
     RedditPostListComponent,
     ListItemComponent,
     HighlightHoverDirective,
-    TestHighlightHoverComponent
+    TestHighlightHoverComponent,
+    UpdatePersonalGalleryFormComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [RedditPostService],
   bootstrap: [AppComponent]

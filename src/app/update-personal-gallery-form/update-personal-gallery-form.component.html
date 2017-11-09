@@ -1,0 +1,35 @@
+<div class="row">
+  <form #redditFormPost="ngForm" class="well" (ngSubmit)="submitPost(redditFormPost)">
+      <label for="title">Title
+        <span class="error" *ngIf="title.errors && (title.dirty || title.touched)">
+                * is required
+        </span>
+      </label>
+      <input class="form-control" type="text" name="title" id="title" ngModel #title="ngModel" 
+        required minlength="1" maxlength="50">
+      
+      <label class="control-label" for="author">Author
+          <span class="error" *ngIf="author.errors && (author.dirty || author.touched)">
+              * is required
+          </span>
+      </label>
+      <input class="form-control" type="text" name="author" id="author" ngModel #author="ngModel"
+        required minlength="1" maxlength="50">
+
+      <label for="permalink">Permalink</label>
+      <input type="text" name="permaLink" id="permaLink" class="form-control" ngModel #permaLink="ngModel">
+
+      <label class="control-label" for="previewLink">Url
+          <span class="error" *ngIf="previewLink.errors?.required && (previewLink.dirty || previewLink.touched)">
+              * is required
+          </span>
+          <span class="error" *ngIf="previewLink.errors?.pattern && (previewLink.dirty || previewLink.touched)">
+              This field must be a url. Example: http://www.google.com
+          </span>
+      </label>
+      <input class="form-control" type="text" name="previewLink" id="previewLink" ngModel #previewLink="ngModel"
+        required minlength="1" pattern="https?://.+">
+
+      <button type="submit" class="btn btn-default" [disabled]="redditFormPost.invalid">Post</button>
+  </form>    
+</div>
