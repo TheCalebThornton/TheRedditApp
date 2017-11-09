@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -11,6 +11,8 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { HighlightHoverDirective } from './highlight-hover.directive';
 import { TestHighlightHoverComponent } from './test-highlight-hover.component';
 import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-form/update-personal-gallery-form.component';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -22,11 +24,14 @@ import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-fo
     ListItemComponent,
     HighlightHoverDirective,
     TestHighlightHoverComponent,
-    UpdatePersonalGalleryFormComponent
+    UpdatePersonalGalleryFormComponent,
+    SearchBoxComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [RedditPostService],
   bootstrap: [AppComponent]
