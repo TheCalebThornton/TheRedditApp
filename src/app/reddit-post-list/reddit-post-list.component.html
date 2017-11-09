@@ -1,0 +1,3 @@
+<div *ngFor="let redditPost of posts">
+  <trg-list-item [post]="redditPost" (postEmitter)="emitPost($event)"></trg-list-item>
+</div>

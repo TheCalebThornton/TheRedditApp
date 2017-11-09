@@ -1,0 +1,4 @@
+Lab 5 bugs notes:
+
+-First image to be displayed is actually the second image in the list...
+-Clicking the details title does not always go to the 'next' image.
