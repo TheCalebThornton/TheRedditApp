@@ -1,20 +1,31 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-form.component';
-import { DebugElement } from '@angular/core';
+import { routes } from '../gallery-feature-routing.module';
+import { RouterTestingModule } from "@angular/router/testing";
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-import { RedditPostService } from '../reddit-post-service';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-form.component';
+import { RedditPostService } from '../reddit-post-service';
+import { GalleryFeatureModule } from '../gallery-feature.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 describe('UpdatePersonalGalleryFormComponent', () => {
   let component: UpdatePersonalGalleryFormComponent;
   let fixture: ComponentFixture<UpdatePersonalGalleryFormComponent>;
   let element: DebugElement;
+  let router: Router;
+
+  class ActiveRouteStub {
+      queryParams = Observable.of({ q: "testTerm" })
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdatePersonalGalleryFormComponent ],
-      imports: [ FormsModule ],
-      providers: [ RedditPostService ] 
+      declarations: [],
+      imports: [ GalleryFeatureModule, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes(routes) ],
+      providers: [ RedditPostService, {provide: ActivatedRoute, useClass: ActiveRouteStub } ]
     })
     .compileComponents();
   }));
@@ -24,12 +35,13 @@ describe('UpdatePersonalGalleryFormComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     element = fixture.debugElement;
+    router = TestBed.get(Router);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-  
+
   describe("validation", () => {
     let clearExtraSpace: Function = (string) => {
       return string.trim().replace(/\s+/, " ");
@@ -184,27 +196,27 @@ describe('UpdatePersonalGalleryFormComponent', () => {
     let inputEvent = new Event("input");
     let titleElement: HTMLInputElement;
     let authorElement: HTMLInputElement;
-    let permaLinkElement: HTMLInputElement;
+    let permalinkElement: HTMLInputElement;
     let previewLinkElement: HTMLInputElement;
 
     let completeForm: Function = () => {
       titleElement.value = "title"; titleElement.dispatchEvent(inputEvent);
       authorElement.value = "author"; authorElement.dispatchEvent(inputEvent);
-      permaLinkElement.value = "http://www.perma.com"; permaLinkElement.dispatchEvent(inputEvent);
-      previewLinkElement.value = "http://www.prev.com"; previewLinkElement.dispatchEvent(inputEvent);
+      permalinkElement.value = "http://www.bananaPermaLink.com"; permalinkElement.dispatchEvent(inputEvent);
+      previewLinkElement.value = "http://www.bananaPreviewLink.com"; previewLinkElement.dispatchEvent(inputEvent);
     };
 
     let clearForm: Function = () => {
       titleElement.value = ""; titleElement.dispatchEvent(inputEvent);
       authorElement.value = ""; authorElement.dispatchEvent(inputEvent);
-      permaLinkElement.value = ""; permaLinkElement.dispatchEvent(inputEvent);
+      permalinkElement.value = ""; permalinkElement.dispatchEvent(inputEvent);
       previewLinkElement.value = ""; previewLinkElement.dispatchEvent(inputEvent);
     }
 
     beforeEach( ()=>{
       titleElement = element.query(By.css("#title")).nativeElement;
       authorElement = element.query(By.css("#author")).nativeElement;
-      permaLinkElement = element.query(By.css("#permaLink")).nativeElement;
+      permalinkElement = element.query(By.css("#permaLink")).nativeElement;
       previewLinkElement = element.query(By.css("#previewLink")).nativeElement;
       submitButton = element.query(By.css("[type='submit']")).nativeElement;
       clearForm();
@@ -244,10 +256,25 @@ describe('UpdatePersonalGalleryFormComponent', () => {
         let lastPost = component.redditPostService.personalGallery[startingNumberOfPosts];
         expect(lastPost.title).toBe(titleElement.value);
         expect(lastPost.author).toBe(authorElement.value);
-        expect(lastPost.permaLink).toBe(permaLinkElement.value);
+        expect(lastPost.permaLink).toBe(permalinkElement.value);
         expect(lastPost.previewLink).toBe(previewLinkElement.value);
       });
     }));
-  });
 
+    it('should call router navigate with the first parameter equal to /myGallery, and second equal to the queryParams observable property from the activated route', async(() => {
+        let spy: jasmine.Spy = spyOn(router, 'navigate')
+    
+        fixture.whenStable().then(() => {
+          component.searchTerm = "testTerm";
+          completeForm();
+          submitButton = element.query(By.css("[type='submit']")).nativeElement;
+          submitButton.click();
+
+          fixture.detectChanges();
+          expect(spy.calls.argsFor(0)[0]).toEqual(["/mygallery"]);
+          expect(spy.calls.argsFor(0)[1].queryParams).toEqual({ searchTerm: "testTerm" });
+          expect(spy.calls.any()).toBe(true);
+        });
+      }));
+  });
 });

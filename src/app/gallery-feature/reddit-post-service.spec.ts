@@ -1,11 +1,11 @@
-import {RedditPostService} from './reddit-post-service';
-import { async, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RedditPostService } from './reddit-post-service';
 
 describe('RedditPostService', () => {
   let service: RedditPostService;
   let httpMock: HttpTestingController;
-  
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
@@ -24,40 +24,39 @@ describe('RedditPostService', () => {
   });
 
   it("should return a different post each time asked", () => {
-      let post1 = service.nextPost();
-      let post2 = service.nextPost();
-      expect(post1).not.toBeNull();
-      expect(post2).not.toBeNull();
-      expect(post1).not.toBe(post2);
+    let postOne = service.nextPost();
+    let postTwo = service.nextPost();
+    expect(postOne).not.toBeNull();
+    expect(postTwo).not.toBeNull();
+    expect(postOne).not.toBe(postTwo);
   });
 
   it("should loop through all posts", function(){
-    let totalSize = service.personalGallery.length
-    let prevPost = service.nextPost();
-    for(let i=0; i<totalSize*2; i++){
-      let newPost = service.nextPost();
-      expect(newPost).not.toBeNull();
-      expect(newPost).not.toBe(prevPost);
-      prevPost = newPost;
+    let loopCount = service.personalGallery.length + 2;
+    let previousPost = service.nextPost();
+    for(let i = 0; i < loopCount; i++){
+      let currentPost = service.nextPost();
+      expect(previousPost).not.toBe(currentPost);
+      previousPost = currentPost;
     }
-  });
+  }); 
   
   it("should retrieve a post from reddit", async(() => {
     let searchTerm: String = "banana";
     let title = "a image of a banana";
     let author = "Bob Bobert";
     let previewLink = "http://www.urltoimage.com";
-    let permalink = "/r/art/comments/44p3lh/a_image_of_a_banana";
+    let permaLink = "/r/art/comments/44p3lh/a_image_of_a_banana";
 
     service.fetchPostFromReddit(searchTerm)
       .subscribe((post) => {
         expect(post.title).toEqual(title);
         expect(post.author).toEqual(author);
         expect(post.previewLink).toEqual(previewLink);
-        expect(post.permaLink).toEqual(permalink);
+        expect(post.permaLink).toEqual(permaLink);
       });
 
-    let postRequest = httpMock.expectOne('https://www.reddit.com/r/Art/search/.json?q=' + searchTerm.replace(" ", '+')+ '&restrict_sr=on&sort=relevance&t=all&limit=100');
+    let postRequest = httpMock.expectOne('https://www.reddit.com/r/Art/search/.json?q=' + searchTerm.replace(" ", '+')+ '&restrict_sr=on&sort=relevance&t=all&limit=10');
     postRequest.flush({
       "data": {
         "children": [
@@ -74,7 +73,7 @@ describe('RedditPostService', () => {
                   ],
               },
               "author": author,
-              "permalink": permalink,
+              "permalink": permaLink,
               "title": title
             }
           }
@@ -99,7 +98,7 @@ describe('RedditPostService', () => {
         }
       );
 
-    let postRequest = httpMock.expectOne('https://www.reddit.com/r/Art/search/.json?q=' + searchTerm.replace(" ", '+')+ '&restrict_sr=on&sort=relevance&t=all&limit=100');
+    let postRequest = httpMock.expectOne('https://www.reddit.com/r/Art/search/.json?q=' + searchTerm.replace(" ", '+')+ '&restrict_sr=on&sort=relevance&t=all&limit=10');
     postRequest.flush({
       "data": {
         "children": [
@@ -115,5 +114,5 @@ describe('RedditPostService', () => {
         ]
       }
     });
-  }));     
+  }));
 });

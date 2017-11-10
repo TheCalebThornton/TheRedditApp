@@ -3,5 +3,6 @@
       <div class="input-group">
         <input [formControl]="searchInput" type="text" name="searchInput" id="searchInput" placeholder="Search" class="form-control">
       </div>
+      <a routerLink="/galleryform" [queryParams] = "{searchTerm: searchInput.value}" class="postLink">Submit Post</a>
   </form>
 </div>

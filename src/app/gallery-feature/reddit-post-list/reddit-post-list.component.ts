@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { RedditPost } from '../reddit-post';
 import { RedditPostService } from '../reddit-post-service';
 
@@ -8,9 +8,10 @@ import { RedditPostService } from '../reddit-post-service';
   styleUrls: ['./reddit-post-list.component.css']
 })
 export class RedditPostListComponent implements OnInit {
-  posts: RedditPost[];
+  @Input() posts: RedditPost[];
   postSerivce: RedditPostService;
   @Output() postEmitter: EventEmitter<RedditPost> = new EventEmitter<RedditPost>();
+
   constructor(postService: RedditPostService) {
     this.posts = postService.personalGallery
     this.postSerivce = postService;

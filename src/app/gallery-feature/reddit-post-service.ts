@@ -8,6 +8,7 @@ import 'rxjs/Rx';
 export class RedditPostService {
     personalGallery: RedditPost[] = [];
     nextIndex: number = 0;
+    searchGallery: RedditPost[] = [];
 
     constructor(private http: HttpClient){
         let post1 = new RedditPost();
@@ -41,9 +42,29 @@ export class RedditPostService {
         return post;
     }
 
+    addToGallery(post: RedditPost) {
+        this.personalGallery.push(post);
+        this.saveGallery();
+    }
+
+    removeFromGallery(post: RedditPost) {
+        this.personalGallery.splice(this.personalGallery.indexOf(post), 1);
+        this.saveGallery();
+    }
+
+    saveGallery(): void {
+        localStorage.setItem("personalGallery", JSON.stringify(this.personalGallery));
+    }
+
+    clearSearchResults(): void {
+        while(this.searchGallery.length){
+            this.searchGallery.pop();
+        }
+    }
+
     fetchPostFromReddit(searchTerm: String): Observable<RedditPost>{
         return this.http.get('https://www.reddit.com/r/Art/search/.json?q=' + 
-                searchTerm.replace(" ", '+') + '&restrict_sr=on&sort=relevance&t=all&limit=100')
+                searchTerm.replace(" ", '+') + '&restrict_sr=on&sort=relevance&t=all&limit=10')
         .mergeMap((response: any, i) => {
             return response.data.children 
         })

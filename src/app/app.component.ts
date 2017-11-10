@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { RedditPostService } from './reddit-post-service';
-import { RedditPost } from './reddit-post';
 
 @Component({
   selector: 'trg-root',
@@ -9,13 +7,7 @@ import { RedditPost } from './reddit-post';
 })
 export class AppComponent {
   title = 'trg';
-  post: RedditPost;
+  constructor(){
+  }
 
-  constructor(private postService: RedditPostService){
-    this.post = postService.nextPost();
-  }
-  
-  setPost(post: RedditPost): void {
-    this.post = post;
-  }
 }

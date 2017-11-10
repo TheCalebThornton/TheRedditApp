@@ -1,0 +1,16 @@
+<div>
+  <button (click)="changeHeight(10)">+</button><button (click)="changeHeight(-10)">-</button>
+  <button (click)="addToMyGallery()" [hidden]="redditPostService.personalGallery.indexOf(post) != -1">Favorite</button>
+  <button (click)="removeFromMyGallery()" [hidden]="redditPostService.personalGallery.indexOf(post) == -1">Delete</button>
+</div>
+<div class="frame-container">
+  <div class="frame">
+    <img id="fancyFrame" title="" [src]="post.previewLink" [ngStyle]="{'height.px': height}"/>
+  </div>
+</div>
+<div class="panel-container" (click)="nextPost()">
+  <div id="titlePanel" class="panel">
+    <div class="title">{{post.title}}</div>
+    <div class="artist">{{post.author}}</div>
+  </div>
+</div> 

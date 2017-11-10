@@ -9,7 +9,6 @@ import { RedditPost } from '../reddit-post';
 export class ListItemComponent implements OnInit {
   @Input() post: RedditPost;
   @Output() postEmitter: EventEmitter<RedditPost> = new EventEmitter<RedditPost>();
-  selected: Boolean = false;
   constructor() { }
 
   ngOnInit() {
@@ -17,7 +16,6 @@ export class ListItemComponent implements OnInit {
 
   selectImage(): void {
     this.postEmitter.emit(this.post);
-    this.selected = true;
   }
 
 }

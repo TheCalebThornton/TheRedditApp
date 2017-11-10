@@ -3,9 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'trg-test-highlight-hover',
   template: `
-  <img trgHighlightHover/>
-  `,
-  styleUrls: ['./app.component.css']
+  <img trgHighlightHover/>`
 })
 export class TestHighlightHoverComponent implements OnInit {
 

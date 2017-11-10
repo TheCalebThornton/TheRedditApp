@@ -1,0 +1,4 @@
+<trg-search-box style="float: right;"></trg-search-box>
+<trg-reddit-post-list style="float: left;" (postEmitter)="setPost($event)" [posts]="personalGallery"></trg-reddit-post-list>
+<trg-reddit-post-list style="float: right;" (postEmitter)="setPost($event)" [posts]="searchGallery"></trg-reddit-post-list>
+<trg-fancy-frame [post]="post" (postEmitter)="setPost($event)"></trg-fancy-frame>

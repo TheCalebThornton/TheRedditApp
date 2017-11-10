@@ -1,39 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-
-import { AppComponent } from './app.component';
-import { FancyFrameComponent } from './fancy-frame/fancy-frame.component';
-import { RedditPostService } from './reddit-post-service';
-import { RedditPostListComponent } from './reddit-post-list/reddit-post-list.component';
-import { ListItemComponent } from './list-item/list-item.component';
-import { HighlightHoverDirective } from './highlight-hover.directive';
-import { TestHighlightHoverComponent } from './test-highlight-hover.component';
-import { UpdatePersonalGalleryFormComponent } from './update-personal-gallery-form/update-personal-gallery-form.component';
-import { SearchBoxComponent } from './search-box/search-box.component';
 import { HttpClientModule } from '@angular/common/http';
-
-
+import { HttpClient } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { TheRedditGalleryComponent } from './the-reddit-gallery/the-reddit-gallery.component';
+import { AppRoutingModule } from './app.routing';
+import { GalleryFeatureModule } from './gallery-feature/gallery-feature.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FancyFrameComponent,
-    RedditPostListComponent,
-    ListItemComponent,
-    HighlightHoverDirective,
-    TestHighlightHoverComponent,
-    UpdatePersonalGalleryFormComponent,
-    SearchBoxComponent
+    TheRedditGalleryComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule,
+    GalleryFeatureModule
   ],
-  providers: [RedditPostService],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
